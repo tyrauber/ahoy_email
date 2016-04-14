@@ -139,9 +139,6 @@ module AhoyEmail
         # remove it
         link.remove_attribute(attribute)
         true
-      elsif link["href"].to_s =~ /unsubscribe/i
-        # try to avoid unsubscribe links
-        true
       else
         false
       end
