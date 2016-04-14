@@ -82,7 +82,7 @@ module AhoyEmail
             id: ahoy_message.token,
             format: "gif"
           )
-        pixel = ActionController::Base.helpers.image_tag(url, size: "1x1", alt: nil)
+        pixel = ActionController::Base.helpers.image_tag(url, height: 1, width: 1, border: 0, alt: nil)
 
         # try to add before body tag
         if raw_source.match(regex)
