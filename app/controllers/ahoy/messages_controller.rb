@@ -5,7 +5,9 @@ module Ahoy
     def open
       if @message && !@message.opened_at
         @message.opened_at = Time.now
-        @message.save!
+        if @message.save!
+          @message.increment!(:open_count) if @message.respond_to?(:open_count=)
+        end
       end
       publish :open
       send_data Base64.decode64("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="), type: "image/gif", disposition: "inline"
@@ -15,7 +17,9 @@ module Ahoy
       if @message && !@message.clicked_at
         @message.clicked_at = Time.now
         @message.opened_at ||= @message.clicked_at
-        @message.save!
+        if @message.save!
+          @message.increment!(:click_count) if @message.respond_to?(:click_count=)
+        end
       end
       url = params[:url].to_s
       signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), AhoyEmail.secret_token, url)
